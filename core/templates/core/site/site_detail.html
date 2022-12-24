@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>{{ object }}</h2>
+    <table class="w3-table w3-bordered w3-margin-top w3-white detail-table">
+        <tr>
+            <th>ID</th>
+            <td>{{ object.pk }}</td>
+        </tr>
+        <tr>
+            <th>Désignation</th>
+            <td>{{ object.designation }}</td>
+        </tr>
+        <tr>
+            <th>Créé</th>
+            <td>{{ object.created }}</td>
+        </tr>
+        <tr>
+            <th>Modifiée</th>
+            <td>{{ object.modified }}</td>
+        </tr>
+    </table>
+    <div class="w3-margin-top">
+        <a href="{% url 'site_update' pk=object.pk %}" class="w3-btn w3-theme-l1  w3-round-small">Modifier</a>
+        <a href="{% url 'site_delete' pk=object.pk %}" class="w3-btn w3-red  w3-round-small">Supprimer</a>
+        <a href="{% url 'site_list' %}" class="w3-btn w3-theme-l1 w3-round-small">Retour à liste</a>
+
+    </div>
+{% endblock %}

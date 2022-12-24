@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+    <ul class="c">
+        <li><a href="{% url 'enterprise_list' %}">Liste Des Entreprises</a></li>
+        <li><a href="{% url 'site_list' %}">Liste Des Sites</a></li>
+        <li><a href="{% url 'zone_list' %}">Liste Des Zones</a></li>
+        <li><a href="{% url 'employee_list' %}">Liste Des Agents</a></li>
+        <li><a href="{% url 'tag_list' %}">Liste Des Tags</a></li>
+    </ul>
+
+    <style>
+        ul.c {
+            list-style-type: square;
+          }
+    </style>
+{% endblock %}

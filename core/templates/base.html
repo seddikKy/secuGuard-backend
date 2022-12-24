@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SecuGARD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'core/css/w3.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'core/css/theme.css' %}">
+</head>
+<body class="w3-light-gray">
+
+{% block top_bar %}
+    {% include 'components/top_bar.html' %}
+{% endblock %}
+
+<div class="w3-container w3-padding-top-24">
+    {% block content %}
+    {% endblock %}
+
+</div>
+
+</body>
+</html>
