@@ -1,4 +1,6 @@
-from django.urls import path
+from django.urls import path, include
+
+from .api import router
 from .views import (EmployeeListView, EmployeeCreateView, EmployeeUpdateView, EmployeeDeleteView,
                      EmployeeDetailView, EnterpriseListView, EnterpriseCreateView, EnterpriseUpdateView, EnterpriseDeleteView,
                     EnterpriseDetailView, SiteListView, SiteCreateView, SiteUpdateView, SiteDeleteView,
@@ -7,6 +9,7 @@ from .views import (EmployeeListView, EmployeeCreateView, EmployeeUpdateView, Em
                      ZoneDetailView,)
 
 urlpatterns = [
+    path('api/', include(router.urls)),
     # Enterprise path
     path('enterprises', EnterpriseListView.as_view(), name='enterprise_list'),
     path('enterprises/create', EnterpriseCreateView.as_view(), name='enterprise_create'),

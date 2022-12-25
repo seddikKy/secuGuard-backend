@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.authtoken import views
+
+
 from core import urls as core_urls
 from core.views import Home, AppLoginView, AppLogoutView
 from django.conf import settings
