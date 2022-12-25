@@ -1,21 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-    
     <h2>Liste des zones</h2>
-  
     <a href="{% url 'zone_create' %}" class="w3-btn w3-theme-action w3-round-small">Nouveau</a>
     <table class="w3-table w3-bordered w3-margin-top w3-white">
         <thead>
         <th>ID</th>
         <th>Désignation</th>
+        <th>Site</th>
+        <th>Entreprise</th>
         <th>Action</th>
         </thead>
         <tbody>
         {% for object in object_list %}
             <tr>
-                <td><a href="{% url 'planning_list_filtred' zone=object.pk selected_day_index=1 %}">{{ object.pk }}</a></td>
-                <td><a href="{% url 'planning_list_filtred' zone=object.pk selected_day_index=1 %}">{{ object.designation}} ({{ object.site}})</a></td>
+                <td>{{ object.pk }}</td>
+                <td>{{ object.designation}}</td>
+                <td>{{ object.site}}</td>
+                <td>{{ object.site.enterprise}}</td>
                 <td>
                     <a href="{% url 'zone_update' pk=object.pk %}" class="w3-btn w3-theme-l5 w3-small">Modifier</a>
                     <a href="{% url 'zone_delete' pk=object.pk %}" class="w3-btn w3-red w3-small">Supprimer</a>
