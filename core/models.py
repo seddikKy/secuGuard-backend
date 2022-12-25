@@ -21,25 +21,25 @@ class Enterprise(TimestampModel):
 
 class Site(TimestampModel):
     designation = models.CharField(max_length=255, verbose_name='Nom du site')
-    id_enterprise = models.ForeignKey(Enterprise,on_delete=models.CASCADE)
+    enterprise = models.ForeignKey(Enterprise,on_delete=models.CASCADE)
 
 
     def __str__(self):
-        return self.designation + f" ({self.id_enterprise.designation})"
+        return self.designation + f" ({self.enterprise.designation})"
 
 
 class Zone(TimestampModel):
     designation = models.CharField(max_length=255, verbose_name='Nom de la zone')
-    id_site = models.ForeignKey(Site,on_delete=models.CASCADE, verbose_name='Site')
+    site = models.ForeignKey(Site,on_delete=models.CASCADE, verbose_name='Site')
 
     def __str__(self):
-        return self.designation + f" ({self.id_site.designation} - {self.id_site.id_enterprise.designation})"
+        return self.designation + f" ({self.site.designation} - {self.site.enterprise.designation})"
 
 
 
 class Employee(TimestampModel):
     designation = models.CharField(max_length=255, verbose_name='Nom de l\'employée')
-    id_site = models.ForeignKey(Site,on_delete=models.CASCADE)
+    site = models.ForeignKey(Site,on_delete=models.CASCADE)
    
     class Meta:
         verbose_name = 'Employée'
@@ -49,8 +49,7 @@ class Employee(TimestampModel):
 
 
 class TagHeader(TimestampModel):
-
-    id_zone = models.ForeignKey(Zone,on_delete=models.CASCADE, verbose_name='Zone')
+    zone = models.ForeignKey(Zone,on_delete=models.CASCADE, verbose_name='Zone')
     code_nfc = models.CharField(max_length=255, verbose_name='code NFC')
     designation = models.CharField(max_length=255, verbose_name='Nom du TAG')
     order = models.PositiveIntegerField(verbose_name='Ordre', blank=True, null=True)
@@ -61,11 +60,10 @@ class TagHeader(TimestampModel):
 
     def __str__(self):
         return self.designation
-    
 
 
 class TagDetail(TimestampModel):
-    id_tag = models.ForeignKey(TagHeader,on_delete=models.CASCADE, verbose_name='Tag')
+    tag_header = models.ForeignKey(TagHeader,on_delete=models.CASCADE, verbose_name='Tag')
     memo_path = models.CharField( max_length=255, verbose_name='Lien de la memo',blank=True, null=True)
     image_path = models.ImageField(null=True, blank=True, upload_to="images/")
     description_anomaly = models.TextField(verbose_name='Anomalie', blank=True, null=True)
@@ -75,4 +73,4 @@ class TagDetail(TimestampModel):
         verbose_name = 'Tag détail'
 
     def __str__(self):
-        return self.id_tag.designation
+        return self.tag_header.designation

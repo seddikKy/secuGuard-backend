@@ -11,18 +11,18 @@ admin.site.register(TagDetail)
 
 @admin.register(Site)
 class SiteAdmin(admin.ModelAdmin):
-    list_display = ('designation', 'id_enterprise')
+    list_display = ('designation', 'enterprise')
     ordering = ('designation',)
-    search_fields = ('designation','id_enterprise',)
+    search_fields = ('designation','enterprise',)
 
 @admin.register(Zone)
 class ZoneAdmin(admin.ModelAdmin):
-    list_display = ('designation', 'id_site')
+    list_display = ('designation', 'site')
     ordering = ('designation',)
-    search_fields = ('designation','id_site',)
+    search_fields = ('designation','site',)
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ('designation', 'id_site')
+    list_display = ('designation', 'site')
     ordering = ('designation',)
-    search_fields = ('designation','id_site',)
+    search_fields = ('designation','site',)

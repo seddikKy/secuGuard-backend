@@ -59,7 +59,7 @@ class EmployeeViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated, DjangoObjectPermissions]
 
 
-class TagViewSet(viewsets.ReadOnlyModelViewSet):  
+class TagViewSet(viewsets.ModelViewSet):  
     """
     A simple ViewSet for viewing object list and detail.
     .../core/api/tags       --> for list

@@ -13,7 +13,7 @@
         {% for object in object_list %}
             <tr>
                 <td>{{ object.pk }}</td>
-                <td>{{ object.designation}} - {{ object.id_site}}</td>
+                <td>{{ object.designation}} - {{ object.site}}</td>
                 <td>
                     <a href="{% url 'employee_update' pk=object.pk %}" class="w3-btn w3-theme-l5 w3-small">Modifier</a>
                     <a href="{% url 'employee_delete' pk=object.pk %}" class="w3-btn w3-red w3-small">Supprimer</a>
