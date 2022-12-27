@@ -1,12 +1,12 @@
 from django.urls import path, include
 
 from .api import router
-from .views import (EmployeeListView, EmployeeCreateView, EmployeeUpdateView, EmployeeDeleteView,
+from .views import ( add_planning, EmployeeListView, EmployeeCreateView, EmployeeUpdateView, EmployeeDeleteView,
                      EmployeeDetailView, EnterpriseListView, EnterpriseCreateView, EnterpriseUpdateView, EnterpriseDeleteView,
                     EnterpriseDetailView, SiteListView, SiteCreateView, SiteUpdateView, SiteDeleteView,
                      SiteDetailView,TagListView, TagCreateView, TagUpdateView, TagDeleteView,
                      TagDetailView, ZoneListView, ZoneCreateView, ZoneUpdateView, ZoneDeleteView,
-                     ZoneDetailView,)
+                     ZoneDetailView,PlanningListView,PlanningCreateView, PlanningUpdateView, PlanningDeleteView, PlanningDetailView)
 
 urlpatterns = [
     path('api/', include(router.urls)),
@@ -46,5 +46,14 @@ urlpatterns = [
     path('tags/<int:pk>/update', TagUpdateView.as_view(), name='tag_update'),
     path('tags/<int:pk>/delete', TagDeleteView.as_view(), name='tag_delete'),
 
+    # planning path
+    #path('plannings', PlanningListView.as_view(), name='planning_list'),
+    path('plannings/filter/<int:zone>/<str:selected_day_index>', PlanningListView.as_view(), name='planning_list_filtred'),
+    path('plannings/<int:zone>/<str:selected_day_index>/create', PlanningCreateView.as_view(), name='planning_create'),
+    path('plannings/<int:pk>', PlanningDetailView.as_view(), name='planning_detail'),
+    path('plannings/<int:pk>/update', PlanningUpdateView.as_view(), name='planning_update'),
+    path('plannings/<int:pk>/delete', PlanningDeleteView.as_view(), name='planning_delete'),
+
+    path('plannings', add_planning, name='planning_zone_list')
     ]
 

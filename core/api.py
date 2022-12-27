@@ -2,9 +2,9 @@ from rest_framework import viewsets
 from rest_framework import routers
 from rest_framework.permissions import IsAuthenticated, DjangoObjectPermissions
 
-from core.models import (Employee, Enterprise, Site, TagHeader, TagDetail, Zone)
+from core.models import (Employee, Enterprise, Site, Tag, PatrolLog,Planning, Zone)
 from core.serializers import (EmployeeSerializer, EnterpriseSerializer, SiteSerializer, 
-    TagSerializer, TagDetailSerializer,ZoneSerializer)
+    TagSerializer, PatrolLogSerializer,PlanningSerializer,ZoneSerializer)
 
 
 class EnterpriseViewSet(viewsets.ReadOnlyModelViewSet):  # viewsets.ModelViewSet  --> Fill CRUD
@@ -20,13 +20,8 @@ class EnterpriseViewSet(viewsets.ReadOnlyModelViewSet):  # viewsets.ModelViewSet
     permission_classes = [IsAuthenticated, DjangoObjectPermissions]
 
 
-class SiteViewSet(viewsets.ReadOnlyModelViewSet):  # viewsets.ModelViewSet  --> Fill CRUD
-    """
-    A simple ViewSet for viewing object list and detail.
-    .../core/api/sites       --> for list
-    .../core/api/sites/2     --> For detail of site 2
-
-    """
+class SiteViewSet(viewsets.ReadOnlyModelViewSet): 
+  
     queryset = Site.objects.all()
     serializer_class = SiteSerializer
 
@@ -34,12 +29,7 @@ class SiteViewSet(viewsets.ReadOnlyModelViewSet):  # viewsets.ModelViewSet  --> 
 
 
 class ZoneViewSet(viewsets.ReadOnlyModelViewSet):  
-    """
-    A simple ViewSet for viewing object list and detail.
-    .../core/api/zones       --> for list
-    .../core/api/zones/2     --> For detail of zone 2
-
-    """
+ 
     queryset = Zone.objects.all()
     serializer_class = ZoneSerializer
 
@@ -47,12 +37,7 @@ class ZoneViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class EmployeeViewSet(viewsets.ReadOnlyModelViewSet):  
-    """
-    A simple ViewSet for viewing object list and detail.
-    .../core/api/employees       --> for list
-    .../core/api/employees/2     --> For detail of employee 2
-
-    """
+   
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
 
@@ -60,27 +45,25 @@ class EmployeeViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class TagViewSet(viewsets.ModelViewSet):  
-    """
-    A simple ViewSet for viewing object list and detail.
-    .../core/api/tags       --> for list
-    .../core/api/tags/2     --> For detail of tag 2
-
-    """
-    queryset = TagHeader.objects.all()
+ 
+    queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
     permission_classes = [IsAuthenticated, DjangoObjectPermissions]
 
 
-class TagDetailViewSet(viewsets.ModelViewSet):  
-    """
-    A simple ViewSet for viewing object list and detail.
-    .../core/api/tag-details       --> for list
-    .../core/api/tag-details/2     --> For detail of tagDetail 2
+class PatrolLogViewSet(viewsets.ModelViewSet):  
 
-    """
-    queryset = TagDetail.objects.all()
-    serializer_class = TagDetailSerializer
+    queryset = PatrolLog.objects.all()
+    serializer_class = PatrolLogSerializer
+
+    permission_classes = [IsAuthenticated, DjangoObjectPermissions]
+
+
+class PlanningViewSet(viewsets.ReadOnlyModelViewSet):  
+
+    queryset = Planning.objects.all()
+    serializer_class = PlanningSerializer
 
     permission_classes = [IsAuthenticated, DjangoObjectPermissions]
 
@@ -91,5 +74,6 @@ router.register('employees', EmployeeViewSet)
 router.register('enterprises', EnterpriseViewSet)
 router.register('sites', SiteViewSet)
 router.register('tags', TagViewSet)
-router.register('tag-details', TagDetailViewSet)
+router.register('patrol-logs', PatrolLogViewSet)
+router.register('plannings', PlanningViewSet)
 router.register('zones', ZoneViewSet)
