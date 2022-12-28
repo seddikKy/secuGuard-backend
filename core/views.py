@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 
 from core.form import PlanningForm
 from .models import (Employee, Enterprise,Planning, Site, Tag, Zone)
-from .cb_views import SCreateView, SDeleteView, SDetailView, SListView, STemplateView, SUpdateView
+from .generic import SCreateView, SDeleteView, SDetailView, SListView, STemplateView, SUpdateView
 
 from django.shortcuts import render
 
