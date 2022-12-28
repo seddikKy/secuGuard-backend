@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from .api import router
-from .views import ( add_planning, EmployeeListView, EmployeeCreateView, EmployeeUpdateView, EmployeeDeleteView,
+from .views import ( EmployeeListView, EmployeeCreateView, EmployeeUpdateView, EmployeeDeleteView,
                      EmployeeDetailView, EnterpriseListView, EnterpriseCreateView, EnterpriseUpdateView, EnterpriseDeleteView,
                     EnterpriseDetailView, SiteListView, SiteCreateView, SiteUpdateView, SiteDeleteView,
                      SiteDetailView,TagListView, TagCreateView, TagUpdateView, TagDeleteView,
@@ -54,6 +54,5 @@ urlpatterns = [
     path('plannings/<int:pk>/update', PlanningUpdateView.as_view(), name='planning_update'),
     path('plannings/<int:pk>/delete', PlanningDeleteView.as_view(), name='planning_delete'),
 
-    path('plannings', add_planning, name='planning_zone_list')
     ]
 

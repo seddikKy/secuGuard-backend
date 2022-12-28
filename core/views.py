@@ -312,9 +312,3 @@ class PlanningDeleteView(SDeleteView):
 
     def get_success_url(self):
         return reverse_lazy('planning_list_filtred', kwargs={ 'zone': self.object.zone.pk, 'selected_day_index': self.object.selected_day_index})
-
-
-
-def add_planning(request):
-    zone = Zone.objects.all()
-    return render(request,'core/planning/planning_zone_list.html',{'object_list': zone})

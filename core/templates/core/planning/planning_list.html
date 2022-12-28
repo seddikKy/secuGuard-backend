@@ -6,7 +6,7 @@
 
     <div class="topnav" id="topnavId">
      
-        <a class="nav-item active" onclick="console.log('clicked');" href="{% url 'planning_list_filtred' zone=zone_id selected_day_index=1 %}" id="a1">Samedi</a>
+        <a class="nav-item active" href="{% url 'planning_list_filtred' zone=zone_id selected_day_index=1 %}" id="a1">Samedi</a>
         <a class="nav-item" href="{% url 'planning_list_filtred' zone=zone_id selected_day_index=2 %}" id="a2">Dimanche</a>
         <a class="nav-item" href="{% url 'planning_list_filtred' zone=zone_id selected_day_index=3  %}" id="a3">Lundi</a>
         <a class="nav-item" href="{% url 'planning_list_filtred' zone=zone_id selected_day_index=4 %}" id="a4">Mardi</a>
@@ -64,55 +64,6 @@
         <a href="{% url 'planning_delete' pk=object.pk %}" class="w3-btn w3-round-small">x</a>
       </div>
       {% endfor %}
-      
-    
-      <script>
-
-        const list = document.querySelector('.topnav');
-                    
-                  
-            const links = list.querySelectorAll('a');
-            console.log(links)
-            const activePage = window.location.pathname;
-            // Add one listener to the list element
-            list.addEventListener('click', handleClick);
-
-            // If the clicked element is a link remove all
-            // the active classes from the other links, and then
-            // add the active class to the link that was clicked on
-            function handleClick(e) {
-              //window.location=e.target.href 
-            //e.preventDefault()
-              //if (e.target.matches('a')) {
-                links.forEach(link => {
-
-                  
-                if (link.href.includes('${activePage}')){
-                  link.classList.remove('active');
-                  link.classList.add('active');
-                }
-                //
-                
-                console.log(link.href.includes('${activePage}'));
-                
-              }
-                )
-            }
-        </script>
-
-
-        {% comment %} document.querySelectorAll(".nav-item").forEach((ele) =>
-        
-          ele.addEventListener("click", function (event) {
-            event.preventDefault();
-            document
-              .querySelectorAll(".nav-item")
-              .forEach((ele) => ele.classList.remove("active"));
-            this.classList.add("active")
-
-          })
-          
-        ); {% endcomment %}
 
   
 {% endblock %}
