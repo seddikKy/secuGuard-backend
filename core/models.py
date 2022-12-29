@@ -89,7 +89,7 @@ class Planning(TimestampModel):
     )
     zone = models.ForeignKey(Zone,on_delete=models.CASCADE, verbose_name='Zone')
     selected_day_index = models.CharField(max_length=10,null=True,blank=True,choices=name_day)
-    patrol_start_time = models.TimeField(auto_now=False, auto_now_add=False, verbose_name='Heure de début de la tournée')
+    patrol_check_time = models.TimeField(auto_now=False, auto_now_add=False, verbose_name='Heure de début de la tournée')
     tolerated_time = models.DurationField(verbose_name='Temps toléré')
     observation = models.TextField(verbose_name='Observation', blank=True, null=True)
     

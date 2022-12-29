@@ -246,7 +246,6 @@ class PlanningListView(SListView):
     
     def get_context_data(self, *args, **kwargs):
         tag_number = Tag.objects.filter(zone_id=self.kwargs['zone']).count()
-        print(tag_number)
         context = super(PlanningListView, self).get_context_data()
         context["zone_id"] = self.kwargs['zone']
         context["selected_day"] = self.kwargs['selected_day_index']
