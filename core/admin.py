@@ -1,12 +1,13 @@
 from django.contrib import admin
 
-from .models import *
+from .models import (Employee, Enterprise, PatrolLog, Planning, Site, Tag, Zone)
 
 
 # Register your models here.
 admin.site.register(Enterprise)
-admin.site.register(TagHeader)
-admin.site.register(TagDetail)
+admin.site.register(Tag)
+admin.site.register(PatrolLog)
+admin.site.register(Planning)
 
 
 @admin.register(Site)

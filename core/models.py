@@ -48,7 +48,7 @@ class Employee(TimestampModel):
         return self.designation
 
 
-class TagHeader(TimestampModel):
+class Tag(TimestampModel):
     zone = models.ForeignKey(Zone,on_delete=models.CASCADE, verbose_name='Zone')
     code_nfc = models.CharField(max_length=255, verbose_name='code NFC')
     designation = models.CharField(max_length=255, verbose_name='Nom du TAG')
@@ -62,15 +62,36 @@ class TagHeader(TimestampModel):
         return self.designation
 
 
-class TagDetail(TimestampModel):
-    tag_header = models.ForeignKey(TagHeader,on_delete=models.CASCADE, verbose_name='Tag')
-    memo_path = models.CharField( max_length=255, verbose_name='Lien de la memo',blank=True, null=True)
+class PatrolLog(TimestampModel):
+    tag = models.ForeignKey(Tag,on_delete=models.CASCADE, verbose_name='Tag')
+    audio_path = models.CharField( max_length=255, verbose_name='Lien de la memo-vocale',blank=True, null=True)
     image_path = models.ImageField(null=True, blank=True, upload_to="images/")
     description_anomaly = models.TextField(verbose_name='Anomalie', blank=True, null=True)
     is_checked = models.BooleanField(verbose_name='tag visité',default=False)
 
     class Meta:
-        verbose_name = 'Tag détail'
+        verbose_name = 'Journal des tournées'
 
     def __str__(self):
-        return self.tag_header.designation
+        return self.tag.designation
+
+
+class Planning(TimestampModel):
+    name_day=(
+        ('1','Samedi'),
+        ('2','Dimanche'),
+        ('3','Lundi'),
+        ('4','Mardi'),
+        ('5','Mercredi'),
+        ('6','Jeudi'),
+        ('7','Vendredi'),
+        ('8','Jour férié'),
+    )
+    zone = models.ForeignKey(Zone,on_delete=models.CASCADE, verbose_name='Zone')
+    selected_day_index = models.CharField(max_length=10,null=True,blank=True,choices=name_day)
+    patrol_start_time = models.TimeField(auto_now=False, auto_now_add=False, verbose_name='Heure de début de la tournée')
+    tolerated_time = models.DurationField(verbose_name='Temps toléré')
+    observation = models.TextField(verbose_name='Observation', blank=True, null=True)
+    
+    def __str__(self):
+        return  f"(planning de la zone : {self.zone}"
