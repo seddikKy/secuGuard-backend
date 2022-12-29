@@ -5,15 +5,21 @@
     <a href="{% url 'tag_create' %}" class="w3-btn w3-theme-action w3-round-small">Nouveau</a>
     <table class="w3-table w3-bordered w3-margin-top w3-white">
         <thead>
-        <th>ID</th>
+        <th>ID NFC</th>
         <th>Désignation</th>
+        <th>Zone</th>
+        <th>Site</th>
+        <th>Entreprise</th>
         <th>Action</th>
         </thead>
         <tbody>
         {% for object in object_list %}
             <tr>
-                <td>{{ object.pk }}</td>
-                <td>{{ object.designation}} - {{ object.zone}}</td>
+                <td>{{ object.code_nfc }}</td>
+                <td>{{ object.designation}}</td>
+                <td>{{ object.zone}}</td>
+                <td>{{ object.zone.site}}</td>
+                <td>{{ object.zone.site.enterprise}}</td>
                 <td>
                     <a href="{% url 'tag_update' pk=object.pk %}" class="w3-btn w3-theme-l5 w3-small">Modifier</a>
                     <a href="{% url 'tag_delete' pk=object.pk %}" class="w3-btn w3-red w3-small">Supprimer</a>

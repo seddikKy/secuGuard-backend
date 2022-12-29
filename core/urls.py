@@ -47,7 +47,7 @@ urlpatterns = [
     path('tags/<int:pk>/delete', TagDeleteView.as_view(), name='tag_delete'),
 
     # planning path
-    #path('plannings', PlanningListView.as_view(), name='planning_list'),
+    path('plannings', PlanningListView.as_view(), name='planning_list'),
     path('plannings/filter/<int:zone>/<str:selected_day_index>', PlanningListView.as_view(), name='planning_list_filtred'),
     path('plannings/<int:zone>/<str:selected_day_index>/create', PlanningCreateView.as_view(), name='planning_create'),
     path('plannings/<int:pk>', PlanningDetailView.as_view(), name='planning_detail'),
