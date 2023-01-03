@@ -2,9 +2,9 @@ from rest_framework import viewsets
 from rest_framework import routers
 from rest_framework.permissions import IsAuthenticated, DjangoObjectPermissions
 
-from core.models import (Employee, Enterprise, Site, Tag, PatrolLog,Planning, Zone)
-from core.serializers import (EmployeeSerializer, EnterpriseSerializer, SiteSerializer, 
-    TagSerializer, PatrolLogSerializer,PlanningSerializer,ZoneSerializer)
+from core.models import (Employee, Enterprise, Site, Tag, PatrolLog, Planning, Zone)
+from core.serializers import (EmployeeSerializer, EnterpriseSerializer, SiteSerializer,
+                              TagSerializer, PatrolLogSerializer, PlanningSerializer, ZoneSerializer)
 
 
 class EnterpriseViewSet(viewsets.ReadOnlyModelViewSet):  # viewsets.ModelViewSet  --> Fill CRUD
@@ -20,48 +20,42 @@ class EnterpriseViewSet(viewsets.ReadOnlyModelViewSet):  # viewsets.ModelViewSet
     permission_classes = [IsAuthenticated, DjangoObjectPermissions]
 
 
-class SiteViewSet(viewsets.ReadOnlyModelViewSet): 
-  
+class SiteViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Site.objects.all()
     serializer_class = SiteSerializer
 
     permission_classes = [IsAuthenticated, DjangoObjectPermissions]
 
 
-class ZoneViewSet(viewsets.ReadOnlyModelViewSet):  
- 
+class ZoneViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Zone.objects.all()
     serializer_class = ZoneSerializer
 
     permission_classes = [IsAuthenticated, DjangoObjectPermissions]
 
 
-class EmployeeViewSet(viewsets.ReadOnlyModelViewSet):  
-   
+class EmployeeViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
 
     permission_classes = [IsAuthenticated, DjangoObjectPermissions]
 
 
-class TagViewSet(viewsets.ModelViewSet):  
- 
+class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
     permission_classes = [IsAuthenticated, DjangoObjectPermissions]
 
 
-class PatrolLogViewSet(viewsets.ModelViewSet):  
-
+class PatrolLogViewSet(viewsets.ModelViewSet):
     queryset = PatrolLog.objects.all()
     serializer_class = PatrolLogSerializer
 
     permission_classes = [IsAuthenticated, DjangoObjectPermissions]
 
 
-class PlanningViewSet(viewsets.ReadOnlyModelViewSet):  
-
+class PlanningViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Planning.objects.all()
     serializer_class = PlanningSerializer
 

@@ -43,5 +43,5 @@ class PatrolLogSerializer(serializers.ModelSerializer):
 class PlanningSerializer(serializers.ModelSerializer):
     class Meta:
         model = Planning
-        fields = ['id', 'zone','selected_day_index','patrol_start_time','tolerated_time','observation', 'created', 'modified']
+        fields = '__all__'
        

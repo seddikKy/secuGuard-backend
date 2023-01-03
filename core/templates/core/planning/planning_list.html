@@ -6,24 +6,22 @@
 
     <div class="topnav" id="topnavId">
      
-        <a class="nav-item active" href="{% url 'planning_list_filtred' zone=zone_id selected_day_index=1 %}" id="a1">Samedi</a>
-        <a class="nav-item" href="{% url 'planning_list_filtred' zone=zone_id selected_day_index=2 %}" id="a2">Dimanche</a>
-        <a class="nav-item" href="{% url 'planning_list_filtred' zone=zone_id selected_day_index=3  %}" id="a3">Lundi</a>
-        <a class="nav-item" href="{% url 'planning_list_filtred' zone=zone_id selected_day_index=4 %}" id="a4">Mardi</a>
-        <a class="nav-item" href="{% url 'planning_list_filtred' zone=zone_id selected_day_index=5 %}" id="a5">Mercredi</a>
-        <a class="nav-item" href="{% url 'planning_list_filtred' zone=zone_id selected_day_index=6 %}" id="a6">Jeudi</a>
-        <a class="nav-item" href="{% url 'planning_list_filtred' zone=zone_id selected_day_index=7 %}" id="a7">Vendredi</a>
-        <a class="nav-item"  href="{% url 'planning_list_filtred' zone=zone_id selected_day_index=8 %}" id="a8">Jour férié</a>
+        <a class="nav-item active" href="/" id="a1">Samedi</a>
+        <a class="nav-item" href="/"id="a2">Dimanche</a>
+        <a class="nav-item" href="/" id="a3">Lundi</a>
+        <a class="nav-item" href="/" id="a4">Mardi</a>
+        <a class="nav-item" href="/" id="a5">Mercredi</a>
+        <a class="nav-item" href="/" id="a6">Jeudi</a>
+        <a class="nav-item" href="/" id="a7">Vendredi</a>
+        <a class="nav-item"  href="/" id="a8">Jour férié</a>
     
     </div>
     <div class="w3-container event-container">
     {% comment %} <div class="event-container"> {% endcomment %}
       <h3 class="patrol-log">Planning de la tournée</h3>
-      <a href="{% url 'planning_create' zone=zone_id selected_day_index=selected_day %}" class="w3-btn w3-theme-action w3-round-small">Nouveau</a> 
+      <a href="/" class="w3-btn w3-theme-action w3-round-small">Nouveau</a>
       {% for object in object_list %}
         <div class="w3-panel w3-card event">
-          
-
           {% comment %} <div class="event-left">
             <div class="event-date">
               <div class="date">27</div>
@@ -60,8 +58,8 @@
      
             
         </div>
-        <a href="{% url 'planning_update' pk=object.pk %}" class="w3-btn w3-round-small">u</a>
-        <a href="{% url 'planning_delete' pk=object.pk %}" class="w3-btn w3-round-small">x</a>
+        <a href="/">u</a>
+        <a href="/">x</a>
       </div>
       {% endfor %}
 

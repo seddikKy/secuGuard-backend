@@ -6,7 +6,7 @@ from .views import ( EmployeeListView, EmployeeCreateView, EmployeeUpdateView, E
                     EnterpriseDetailView, SiteListView, SiteCreateView, SiteUpdateView, SiteDeleteView,
                      SiteDetailView,TagListView, TagCreateView, TagUpdateView, TagDeleteView,
                      TagDetailView, ZoneListView, ZoneCreateView, ZoneUpdateView, ZoneDeleteView,
-                     ZoneDetailView,PlanningListView,PlanningCreateView, PlanningUpdateView, PlanningDeleteView, PlanningDetailView)
+                     ZonePlanning,PlanningListView,PlanningCreateView, PlanningUpdateView, PlanningDeleteView, PlanningDetailView)
 
 urlpatterns = [
     path('api/', include(router.urls)),
@@ -27,7 +27,7 @@ urlpatterns = [
     # Zone path
     path('zones', ZoneListView.as_view(), name='zone_list'),
     path('zones/create', ZoneCreateView.as_view(), name='zone_create'),
-    path('zones/<int:pk>', ZoneDetailView.as_view(), name='zone_detail'),
+    path('zones/<int:pk>/<int:day_index>', ZonePlanning.as_view(), name='zone_detail'),
     path('zones/<int:pk>/update', ZoneUpdateView.as_view(), name='zone_update'),
     path('zones/<int:pk>/delete', ZoneDeleteView.as_view(), name='zone_delete'),
 

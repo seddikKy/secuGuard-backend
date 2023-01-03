@@ -1,29 +1,63 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>{{ object }}</h2>
+    <h2>{{ parent_object }}</h2>
     <table class="w3-table w3-bordered w3-margin-top w3-white detail-table">
         <tr>
             <th>ID</th>
-            <td>{{ object.pk }}</td>
+            <td>{{ parent_object.pk }}</td>
         </tr>
         <tr>
             <th>Désignation</th>
-            <td>{{ object.designation }}</td>
-        </tr>
-        <tr>
-            <th>Créée</th>
-            <td>{{ object.created }}</td>
-        </tr>
-        <tr>
-            <th>Modifiée</th>
-            <td>{{ object.modified }}</td>
+            <td>{{ parent_object.designation }}</td>
         </tr>
     </table>
     <div class="w3-margin-top">
-        <a href="{% url 'zone_update' pk=object.pk %}" class="w3-btn w3-theme-l1  w3-round-small">Modifier</a>
-        <a href="{% url 'zone_delete' pk=object.pk %}" class="w3-btn w3-red  w3-round-small">Supprimer</a>
+        <a href="{% url 'zone_update' pk=parent_object.pk %}" class="w3-btn w3-theme-l1  w3-round-small">Modifier</a>
+        <a href="{% url 'zone_delete' pk=parent_object.pk %}" class="w3-btn w3-red  w3-round-small">Supprimer</a>
         <a href="{% url 'zone_list' %}" class="w3-btn w3-theme-l1 w3-round-small">Retour à liste</a>
 
+    </div>
+
+    {#    Child object List#}
+    <div class="w3-padding-32">
+        {#    Tab bar#}
+        <div class="w3-bar w3-theme">
+            <a class="w3-bar-item w3-button {% if request.resolver_match.kwargs.day_index == 1 %} w3-white{% else %} w3-theme-l1{% endif %}"
+               href="{% url 'zone_detail' pk=parent_object.pk day_index=1 %}">Dimache</a>
+        <a class="w3-bar-item w3-button {% if request.resolver_match.kwargs.day_index == 2 %} w3-white{% else %} w3-theme-l1{% endif %}"
+               href="{% url 'zone_detail' pk=parent_object.pk day_index=2 %}">Lundi</a>
+        <a class="w3-bar-item w3-button {% if request.resolver_match.kwargs.day_index == 3%} w3-white{% else %} w3-theme-l1{% endif %}"
+               href="{% url 'zone_detail' pk=parent_object.pk day_index=3 %}">Mardi</a>
+        <a class="w3-bar-item w3-button {% if request.resolver_match.kwargs.day_index == 4 %} w3-white{% else %} w3-theme-l1{% endif %}"
+               href="{% url 'zone_detail' pk=parent_object.pk day_index=4 %}">Mercredi</a>
+        <a class="w3-bar-item w3-button {% if request.resolver_match.kwargs.day_index == 5 %} w3-white{% else %} w3-theme-l1{% endif %}"
+               href="{% url 'zone_detail' pk=parent_object.pk day_index=5 %}">Jeudi</a>
+        <a class="w3-bar-item w3-button {% if request.resolver_match.kwargs.day_index == 6 %} w3-white{% else %} w3-theme-l1{% endif %}"
+               href="{% url 'zone_detail' pk=parent_object.pk day_index=6 %}">Vendredi</a>
+        <a class="w3-bar-item w3-button {% if request.resolver_match.kwargs.day_index == 7 %} w3-white{% else %} w3-theme-l1{% endif %}"
+               href="{% url 'zone_detail' pk=parent_object.pk day_index=7 %}">Samedi</a>
+        <a class="w3-bar-item w3-button {% if request.resolver_match.kwargs.day_index == 8 %} w3-white{% else %} w3-theme-l1{% endif %}"
+               href="{% url 'zone_detail' pk=parent_object.pk day_index=8 %}">Jours Férés</a>
+
+        </div>
+        <table class="w3-table w3-white w3-bordered">
+            <thead>
+            <th>Jour</th>
+            <th>Ckeck Time</th>
+            <th>Tolérance</th>
+            <th>Observation</th>
+            </thead>
+
+            {% for obj in object_list %}
+                <tr>
+                    <td> {{ obj.selected_day_index }}</td>
+                    <td> {{ obj.patrol_check_time }}</td>
+                    <td> {{ obj.tolerated_time }}</td>
+                    <td> {{ obj.observation }}</td>
+                </tr>
+
+            {% endfor %}
+        </table>
     </div>
 {% endblock %}
