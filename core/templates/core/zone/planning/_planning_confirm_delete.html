@@ -42,35 +42,16 @@
 
         </div>
         <div class="w3-padding-16">
-            <a class="w3-button w3-border"
-               href="{% url 'planning_create' parent_pk=parent_object.pk day_index=request.resolver_match.kwargs.day_index %}">
-                + Check Point
-            </a>
+            <h3>{{ object }}</h3>
         </div>
-        <table class="w3-table w3-white w3-bordered">
-            <thead>
-            <th>ID</th>
-            <th>Ckeck Time</th>
-            <th>Tolérance</th>
-            <th>Actions</th>
-            </thead>
-
-            {% for obj in object_list %}
-                <tr>
-                    <td> {{ obj.id }}</td>
-                    <td> {{ obj.patrol_check_time }}</td>
-                    <td> {{ obj.tolerated_time }}</td>
-                    <td>
-                        <a class="w3-button w3-theme-l5"
-                           href="{% url 'planning_update' parent_pk=parent_object.pk day_index=obj.selected_day_index pk=obj.pk %}">Modifier</a>
-                        <a class="w3-button w3-deep-orange"
-                        href="{% url 'planning_delete' parent_pk=parent_object.pk day_index=obj.selected_day_index pk=obj.pk %}">
-                        Supprimer</a>
-                        <a class="w3-button w3-theme-l5" href="{% url 'planning_detail' parent_pk=parent_object.pk day_index=obj.selected_day_index pk=obj.pk %}">Afficher</a>
-                    </td>
-                </tr>
-
-            {% endfor %}
-        </table>
+        <div class="w3-padding-16 w3-container w3-white">
+            <form method="POST">
+                {% csrf_token %}
+                <p class="w3-wh">Voulez-vous vraiment supprimer l' enregistrement <span class="w3-text-deep-orange">{{ object }}</span> ?
+                </p>
+                <input class="w3-btn w3-red w3-round-small" type="submit" value="Supprimer"/>
+                <a class="w3-btn w3-theme-l1 w3-round-small" href="javascript:history.back()">Annuler</a>
+            </form>
+        </div>
     </div>
 {% endblock %}

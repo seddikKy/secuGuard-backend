@@ -35,7 +35,7 @@ class ParentObjectMixin(ContextMixin):
     Provide the ability to retrieve a single object for further manipulation.
     """
     parent_model = None
-    parent_pk_url_kwarg = 'pk'
+    parent_pk_url_kwarg = 'parent_pk'
 
     def get_parent_object(self, queryset=None):
         """
@@ -89,3 +89,64 @@ class SParentDetailChildListView(ParentObjectMixin, SListView):
         context = super().get_context_data(*arg, **kwargs)
         context.update(self.get_parent_context_data())
         return context
+
+
+class SParentDetailChildCreateView(ParentObjectMixin, SCreateView):
+    """
+    Master detail generic view
+    """
+    parent_field = 'parent'  # Child foreign key for parent model
+
+    def get_queryset(self):
+        return super().get_queryset().filter(**{self.parent_field: self.get_parent_object()})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(self.get_parent_context_data())
+        return context
+
+
+class SParentDetailChildUpdateView(ParentObjectMixin, SUpdateView):
+    """
+    Master detail generic view
+    """
+    parent_field = 'parent'  # Child foreign key for parent model
+
+    def get_queryset(self):
+        return super().get_queryset().filter(**{self.parent_field: self.get_parent_object()})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(self.get_parent_context_data())
+        return context
+
+
+class SParentDetailChildDeleteView(ParentObjectMixin, SDeleteView):
+    """
+    Master detail generic view
+    """
+    parent_field = 'parent'  # Child foreign key for parent model
+
+    def get_queryset(self):
+        return super().get_queryset().filter(**{self.parent_field: self.get_parent_object()})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(self.get_parent_context_data())
+        return context
+
+
+class SParentDetailChildDetailView(ParentObjectMixin, SDetailView):
+    """
+    Master detail generic view
+    """
+    parent_field = 'parent'  # Child foreign key for parent model
+
+    def get_queryset(self):
+        return super().get_queryset().filter(**{self.parent_field: self.get_parent_object()})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(self.get_parent_context_data())
+        return context
+

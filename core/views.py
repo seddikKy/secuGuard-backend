@@ -5,7 +5,8 @@ from django.urls import reverse_lazy
 from core.form import PlanningForm
 from .models import (Employee, Enterprise, Planning, Site, Tag, Zone)
 from .generic import SCreateView, SDeleteView, SDetailView, SListView, STemplateView, SUpdateView, \
-    SParentDetailChildListView
+    SParentDetailChildListView, SParentDetailChildCreateView, SParentDetailChildUpdateView, \
+    SParentDetailChildDetailView, SParentDetailChildDeleteView
 
 from django.shortcuts import render
 
@@ -315,14 +316,95 @@ class PlanningDeleteView(SDeleteView):
                             kwargs={'zone': self.object.zone.pk, 'selected_day_index': self.object.selected_day_index})
 
 
-class ZonePlanning(SParentDetailChildListView):
+class ZoneDetailPlanningListView(SParentDetailChildListView):
     parent_model = Zone
     model = Planning
     parent_field = 'zone'
 
     template_name = 'core/zone/zone_detail.html'
     login_url = reverse_lazy('login')
-    permission_required = ('core.delete_planning',)
+    permission_required = ('core.view_planning',)
+
+    def get_queryset(self):
+        return super().get_queryset().filter(selected_day_index=self.kwargs['day_index'])
+
+
+class ZoneDetailPlanningCreateView(SParentDetailChildCreateView):
+    parent_model = Zone
+    model = Planning
+    parent_field = 'zone'
+
+    template_name = 'core/zone/planning/_planning_form.html'
+    login_url = reverse_lazy('login')
+    permission_required = ('core.add_planning',)
+
+    fields = '__all__'
+
+    def form_valid(self, form):
+        form.instance.selected_day_index = self.kwargs['day_index']
+        form.instance.zone_id = self.kwargs['parent_pk']
+        return super().form_valid(form)
+
+    def get_queryset(self):
+        return super().get_queryset().filter(selected_day_index=self.kwargs['day_index'])
+
+    def get_success_url(self):
+        return reverse_lazy('zone_detail',
+                            kwargs={'parent_pk': self.kwargs['parent_pk'], 'day_index': self.kwargs['day_index']})
+
+
+class ZoneDetailPlanningUpdateView(SParentDetailChildUpdateView):
+    parent_model = Zone
+    model = Planning
+    parent_field = 'zone'
+
+    template_name = 'core/zone/planning/_planning_form.html'
+    login_url = reverse_lazy('login')
+    permission_required = ('core.change_planning',)
+
+    fields = '__all__'
+
+    def form_valid(self, form):
+        form.instance.selected_day_index = self.kwargs['day_index']
+        form.instance.zone_id = self.kwargs['parent_pk']
+        return super().form_valid(form)
+
+    def get_queryset(self):
+        return super().get_queryset().filter(selected_day_index=self.kwargs['day_index'])
+
+    def get_success_url(self):
+        return reverse_lazy('zone_detail',
+                            kwargs={'parent_pk': self.kwargs['parent_pk'], 'day_index': self.kwargs['day_index']})
+
+
+class ZoneDetailPlanningDeleteView(SParentDetailChildDeleteView):
+    parent_model = Zone
+    model = Planning
+    parent_field = 'zone'
+
+    template_name = 'core/zone/planning/_planning_confirm_delete.html'
+    login_url = reverse_lazy('login')
+    permission_required = ('core.change_planning',)
+
+    fields = '__all__'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(selected_day_index=self.kwargs['day_index'])
+
+    def get_success_url(self):
+        return reverse_lazy('zone_detail', kwargs={'parent_pk': self.kwargs['parent_pk'], 'day_index': self.kwargs['day_index']})
+
+
+class ZoneDetailPlanningDetailView(SParentDetailChildDetailView):
+    parent_model = Zone
+    model = Planning
+    parent_field = 'zone'
+
+    template_name = 'core/zone/planning/_planning_detail.html'
+    login_url = reverse_lazy('login')
+    permission_required = ('core.view_planning',)
+
+    fields = '__all__'
 
     def get_queryset(self):
         return super().get_queryset().filter(selected_day_index=self.kwargs['day_index'])

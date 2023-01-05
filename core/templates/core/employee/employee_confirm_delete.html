@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form method="POST">
-        {% csrf_token %}
-        <p class="w3-wh">Voulez-vous vraiment supprimer l' enregistrement <span>{{ object }}</span> ?
-        </p>
-        <input class="w3-btn w3-red w3-round-small" type="submit" value="Supprimer"/>
-        <a class="w3-btn w3-theme-l1 w3-round-small" href="javascript:history.back()">Annuler</a>
-    </form>
+    <div class="w3-container w3-padding-16 w3-white">
+        <form method="POST">
+            {% csrf_token %}
+            <p class="w3-white">Voulez-vous vraiment supprimer l' enregistrement <span>{{ object }}</span> ?
+            </p>
+            <input class="w3-btn w3-red w3-round-small" type="submit" value="Supprimer"/>
+            <a class="w3-btn w3-theme-l1 w3-round-small" href="javascript:history.back()">Annuler</a>
+        </form>
+    </div>
+
 {% endblock %}
