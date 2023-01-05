@@ -122,14 +122,6 @@ class ZoneListView(SListView):
     permission_required = ('core.view_zone',)
 
 
-#
-# class ZoneDetailView(SDetailView):
-#     model = Zone
-#     template_name = "core/zone/zone_detail.html"
-#     login_url = reverse_lazy('login')
-#     permission_required = ('core.view_zone',)
-
-
 class ZoneCreateView(SCreateView):
     model = Zone
     template_name = "core/zone/zone_form.html"
@@ -242,80 +234,6 @@ class TagDeleteView(SDeleteView):
 
 # planning views
 
-class PlanningListView(SListView):
-    model = Planning
-    template_name = "core/planning/planning_list.html"
-    login_url = reverse_lazy('login')
-    permission_required = ('core.view_planning',)
-
-    def get_context_data(self, *args, **kwargs):
-        tag_number = 2
-        context = super(PlanningListView, self).get_context_data()
-        context["zone_id"] = ''
-        context["selected_day"] = '1'
-        context["tag_number"] = tag_number
-        return context
-
-
-class PlanningDetailView(SDetailView):
-    model = Planning
-    template_name = "core/planning/planning_detail.html"
-    login_url = reverse_lazy('login')
-    permission_required = ('core.view_planning',)
-
-
-class PlanningCreateView(SCreateView):
-    model = Planning
-    template_name = "core/planning/planning_form.html"
-    login_url = reverse_lazy('login')
-    permission_required = ('core.change_planning',)
-    # fields = '__all__'
-    # success_url = reverse_lazy('planning_list_filtred')
-    form_class = PlanningForm
-
-    def get_initial(self):
-        return {'zone': self.kwargs['zone'], 'selected_day_index': self.kwargs['selected_day_index']}
-
-    def form_valid(self, form):
-        zone = Zone.objects.get(pk=self.kwargs['zone'])
-        form.instance.zone = zone
-        form.instance.selected_day_index = self.kwargs['selected_day_index']
-        form.save()
-
-        return super(PlanningCreateView, self).form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy('planning_list_filtred',
-                            kwargs={'zone': self.object.zone.pk, 'selected_day_index': self.object.selected_day_index})
-
-
-class PlanningUpdateView(SUpdateView):
-    model = Planning
-    template_name = "core/planning/planning_form.html"
-    login_url = reverse_lazy('login')
-    permission_required = ('core.change_planning',)
-    fields = '__all__'
-
-    # success_url = reverse_lazy('planning_list')
-
-    def get_success_url(self):
-        return reverse_lazy('planning_list_filtred',
-                            kwargs={'zone': self.object.zone.pk, 'selected_day_index': self.object.selected_day_index})
-
-
-class PlanningDeleteView(SDeleteView):
-    model = Planning
-    template_name = "core/planning/planning_confirm_delete.html"
-    login_url = reverse_lazy('login')
-    permission_required = ('core.delete_planning',)
-
-    # success_url = reverse_lazy('planning_list')
-
-    def get_success_url(self):
-        return reverse_lazy('planning_list_filtred',
-                            kwargs={'zone': self.object.zone.pk, 'selected_day_index': self.object.selected_day_index})
-
-
 class ZoneDetailPlanningListView(SParentDetailChildListView):
     parent_model = Zone
     model = Planning
@@ -392,7 +310,8 @@ class ZoneDetailPlanningDeleteView(SParentDetailChildDeleteView):
         return super().get_queryset().filter(selected_day_index=self.kwargs['day_index'])
 
     def get_success_url(self):
-        return reverse_lazy('zone_detail', kwargs={'parent_pk': self.kwargs['parent_pk'], 'day_index': self.kwargs['day_index']})
+        return reverse_lazy('zone_detail',
+                            kwargs={'parent_pk': self.kwargs['parent_pk'], 'day_index': self.kwargs['day_index']})
 
 
 class ZoneDetailPlanningDetailView(SParentDetailChildDetailView):

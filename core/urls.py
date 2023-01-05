@@ -7,8 +7,7 @@ from .views import (EmployeeListView, EmployeeCreateView, EmployeeUpdateView, Em
                     EnterpriseDetailView, SiteListView, SiteCreateView, SiteUpdateView, SiteDeleteView,
                     SiteDetailView, TagListView, TagCreateView, TagUpdateView, TagDeleteView,
                     TagDetailView, ZoneListView, ZoneCreateView, ZoneUpdateView, ZoneDeleteView,
-                    ZoneDetailPlanningListView, PlanningListView, PlanningCreateView, PlanningUpdateView,
-                    PlanningDeleteView, PlanningDetailView, ZoneDetailPlanningCreateView, ZoneDetailPlanningUpdateView,
+                    ZoneDetailPlanningListView, ZoneDetailPlanningCreateView, ZoneDetailPlanningUpdateView,
                     ZoneDetailPlanningDeleteView, ZoneDetailPlanningDetailView)
 
 urlpatterns = [
@@ -34,11 +33,11 @@ urlpatterns = [
     path('zones/<int:pk>/delete', ZoneDeleteView.as_view(), name='zone_delete'),
 
     # Zone Planning
-    path('zones/<int:parent_pk>/<int:day_index>', ZoneDetailPlanningListView.as_view(), name='zone_detail'),
-    path('zones/<int:parent_pk>/<int:day_index>/<int:pk>', ZoneDetailPlanningDetailView.as_view(), name='planning_detail'),
-    path('zones/<int:parent_pk>/<int:day_index>/create', ZoneDetailPlanningCreateView.as_view(), name='planning_create'),
-    path('zones/<int:parent_pk>/<int:day_index>/<int:pk>/update', ZoneDetailPlanningUpdateView.as_view(), name='planning_update'),
-    path('zones/<int:parent_pk>/<int:day_index>/<int:pk>/delete', ZoneDetailPlanningDeleteView.as_view(), name='planning_delete'),
+    path('zones/<int:parent_pk>/<int:day_index>/plannings/', ZoneDetailPlanningListView.as_view(), name='zone_detail'),
+    path('zones/<int:parent_pk>/<int:day_index>/plannings/create', ZoneDetailPlanningCreateView.as_view(), name='planning_create'),
+    path('zones/<int:parent_pk>/<int:day_index>/plannings/<int:pk>', ZoneDetailPlanningDetailView.as_view(), name='planning_detail'),
+    path('zones/<int:parent_pk>/<int:day_index>/plannings/<int:pk>/update', ZoneDetailPlanningUpdateView.as_view(), name='planning_update'),
+    path('zones/<int:parent_pk>/<int:day_index>/plannings/<int:pk>/delete', ZoneDetailPlanningDeleteView.as_view(), name='planning_delete'),
 
     # Employee path
     path('employees', EmployeeListView.as_view(), name='employee_list'),
@@ -53,5 +52,4 @@ urlpatterns = [
     path('tags/<int:pk>', TagDetailView.as_view(), name='tag_detail'),
     path('tags/<int:pk>/update', TagUpdateView.as_view(), name='tag_update'),
     path('tags/<int:pk>/delete', TagDeleteView.as_view(), name='tag_delete'),
-
 ]
