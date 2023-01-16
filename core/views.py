@@ -139,6 +139,11 @@ class ZoneUpdateView(SUpdateView):
     fields = '__all__'
     success_url = reverse_lazy('zone_list')
 
+    def get_success_url(self):
+        self.get_object().create_planned_checkpoints()
+        return self.success_url
+
+
 
 class ZoneDeleteView(SDeleteView):
     model = Zone

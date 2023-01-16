@@ -1,4 +1,21 @@
+import datetime
+
 from django.db import models
+from django.utils import timezone
+import calendar
+
+# Calendar settings
+calendar.setfirstweekday(calendar.SUNDAY)
+HOLIDAY_DAY_INDEX = 8
+WEEK_DAYS_MAPPING = (
+    (calendar.MONDAY, 'Lundi'),
+    (calendar.TUESDAY, 'Mardi'),
+    (calendar.WEDNESDAY, 'Mercredi'),
+    (calendar.THURSDAY, 'Jeudi'),
+    (calendar.FRIDAY, 'Vendredi'),
+    (calendar.SATURDAY, 'Samedi'),
+    (calendar.SUNDAY, 'Dimanche'),
+    (HOLIDAY_DAY_INDEX, 'Jours fériés'))
 
 
 class TimestampModel(models.Model):
@@ -28,11 +45,47 @@ class Site(TimestampModel):
 
 
 class Zone(TimestampModel):
+    PLAN_STATES = (
+        (1, 'Brouillon'),
+        (2, 'Validé'),
+    )
     designation = models.CharField(max_length=255, verbose_name='Nom de la zone')
     site = models.ForeignKey(Site, on_delete=models.CASCADE, verbose_name='Site')
+    plan_state = models.IntegerField(choices=PLAN_STATES, default=1)
 
     def __str__(self):
         return self.designation + f" ({self.site.designation} - {self.site.enterprise.designation})"
+
+    def validate_plan(self):
+        self.plan_state = 1
+        self.save()
+
+    def create_planned_checkpoints(self):
+        current_datetime = timezone.now()
+        today = current_datetime.date()
+        today_weekday_index = calendar.weekday(today.year, today.month, today.day)
+
+        # Update check plan
+        future_plans = PatrolLog.objects.filter(check_datetime__gte=current_datetime)
+        future_plans.delete()
+
+        related_tags = Tag.objects.filter(zone=self)  # Tags assigned to the current Zone
+        zone_planning = Planning.objects.filter(zone=self)
+
+        for plan in zone_planning:
+            if plan.selected_day_index != HOLIDAY_DAY_INDEX:  # holidays index
+                for tag in related_tags:
+                    if today_weekday_index <= plan.selected_day_index:
+                        check_date = today + datetime.timedelta(plan.selected_day_index - today_weekday_index)
+                    else:
+                        check_date = today + datetime.timedelta(plan.selected_day_index)
+                    check_time = plan.patrol_check_time
+                    check_datetime = datetime.datetime.combine(check_date, check_time)
+                    PatrolLog.objects.create(
+                        tag=tag,
+                        check_tolerance=plan.tolerated_time,
+                        check_datetime=check_datetime
+                    )
 
 
 class Employee(TimestampModel):
@@ -66,6 +119,13 @@ class PatrolLog(TimestampModel):
     image_path = models.ImageField(null=True, blank=True, upload_to="images/")
     description_anomaly = models.TextField(verbose_name='Anomalie', blank=True, null=True)
     is_checked = models.BooleanField(verbose_name='tag visité', default=False)
+    check_datetime = models.DateTimeField('Date / Heure prévue ')
+    check_tolerance = models.DurationField('Tolérance')
+    checked_datetime = models.DateTimeField(verbose_name='Date / Heure de passage', blank=True, null=True,
+                                            editable=False)
+    checked_by = models.ForeignKey(Employee, on_delete=models.PROTECT,
+                                   verbose_name=('Controlé par'),
+                                   null=True, blank=True, editable=False)
 
     class Meta:
         verbose_name = 'Journal des tournées'
@@ -74,19 +134,14 @@ class PatrolLog(TimestampModel):
         return self.tag.designation
 
 
+class Holiday(TimestampModel):
+    designation = models.CharField(max_length=100, verbose_name='Désignation')
+    date = models.DateField(verbose_name='Date')
+
+
 class Planning(TimestampModel):
-    name_day = (
-        ('1', 'Samedi'),
-        ('2', 'Dimanche'),
-        ('3', 'Lundi'),
-        ('4', 'Mardi'),
-        ('5', 'Mercredi'),
-        ('6', 'Jeudi'),
-        ('7', 'Vendredi'),
-        ('8', 'Jour férié'),
-    )
     zone = models.ForeignKey(Zone, on_delete=models.CASCADE, verbose_name='Zone', editable=False)
-    selected_day_index = models.IntegerField(choices=name_day, editable=False)
+    selected_day_index = models.IntegerField(choices=WEEK_DAYS_MAPPING, editable=False)
     patrol_check_time = models.TimeField(auto_now=False, auto_now_add=False,
                                          verbose_name='Heure de début de la tournée')
     tolerated_time = models.DurationField(verbose_name='Temps toléré')
