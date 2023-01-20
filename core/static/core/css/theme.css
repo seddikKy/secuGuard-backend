@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;700&display=swap');
+
+html, body, h1, h2, h3, h4, h5, h6 {
+    font-family: 'Fira Sans', sans-serif;
+}
+
+/*   Below is default from w3css theme builder */
+
 .w3-theme-l5 {
     color: #000 !important;
     background-color: #e7fff9 !important
@@ -89,7 +97,7 @@
     border-color: #006e51 !important
 }
 
-.model-form , .detail-table{
+.model-form, .detail-table {
     width: 100%;
     max-width: 500px;
 }
@@ -97,7 +105,8 @@
 .model-form .w3-table td {
     padding: 4px 6px;
 }
-.model-form .w3-table th , .detail-table th {
+
+.model-form .w3-table th, .detail-table th {
     width: 80px;
     max-width: 100px;
     font-size: 0.8em;

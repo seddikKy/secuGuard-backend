@@ -7,11 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/w3.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/theme.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'core/css/planning.css' %}">
-   
-</head>
-<body class="w3-light-gray">
+    <link rel="stylesheet" type="text/css" href="{% static 'core/css/messages.css' %}">
 
+
+</head>
+{% include 'components/_messages.html' %}
+<body class="w3-light-gray">
+{% for message in messages %}
+{% endfor %}
 {% block top_bar %}
     {% include 'components/top_bar.html' %}
 {% endblock %}
@@ -24,3 +27,14 @@
 
 </body>
 </html>
+<script>
+    window.onload = function () {
+        setTimeout(function () {
+                let messages = document.getElementById('messages-area')
+                if (messages) {
+                    messages.classList.add('w3-hide')
+                }
+            }, 3000
+        )
+    }
+</script>

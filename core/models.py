@@ -1,5 +1,6 @@
 import datetime
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 import calendar
@@ -51,13 +52,17 @@ class Zone(TimestampModel):
     )
     designation = models.CharField(max_length=255, verbose_name='Nom de la zone')
     site = models.ForeignKey(Site, on_delete=models.CASCADE, verbose_name='Site')
-    plan_state = models.IntegerField(choices=PLAN_STATES, default=1)
+    plan_state = models.IntegerField(choices=PLAN_STATES, default=PLAN_STATES[0][0], editable=False)
 
     def __str__(self):
         return self.designation + f" ({self.site.designation} - {self.site.enterprise.designation})"
 
     def validate_plan(self):
-        self.plan_state = 1
+        self.plan_state = self.PLAN_STATES[1][0]
+        self.save()
+
+    def invalidate_plan(self):
+        self.plan_state = self.PLAN_STATES[0][0]
         self.save()
 
     def create_planned_checkpoints(self):
@@ -66,7 +71,10 @@ class Zone(TimestampModel):
         today_weekday_index = calendar.weekday(today.year, today.month, today.day)
 
         # Update check plan
-        future_plans = PatrolLog.objects.filter(check_datetime__gte=current_datetime)
+        future_plans = PatrolLog.objects.filter(
+            check_datetime__gte=current_datetime,
+            tag__zone=self
+        )
         future_plans.delete()
 
         related_tags = Tag.objects.filter(zone=self)  # Tags assigned to the current Zone
@@ -86,6 +94,14 @@ class Zone(TimestampModel):
                         check_tolerance=plan.tolerated_time,
                         check_datetime=check_datetime
                     )
+                    # todo if holidays ?
+
+    def do_action(self, action, user):
+        if action == 'confirm':
+            self.create_planned_checkpoints()
+            self.validate_plan()
+        elif action == 'reopen':
+            self.invalidate_plan()
 
 
 class Employee(TimestampModel):
@@ -149,3 +165,9 @@ class Planning(TimestampModel):
 
     def __str__(self):
         return f"Check time : {self.patrol_check_time} (+{self.tolerated_time})"
+
+    def save(self, *args, **kwargs):
+        if self.zone.plan_state != 1:
+            raise ValidationError('Vous ne pouvez pas modifier un planning valider !')
+        else:
+            super().save(args, kwargs)

@@ -6,7 +6,7 @@ from core.form import PlanningForm
 from .models import (Employee, Enterprise, Planning, Site, Tag, Zone)
 from .generic import SCreateView, SDeleteView, SDetailView, SListView, STemplateView, SUpdateView, \
     SParentDetailChildListView, SParentDetailChildCreateView, SParentDetailChildUpdateView, \
-    SParentDetailChildDetailView, SParentDetailChildDeleteView
+    SParentDetailChildDetailView, SParentDetailChildDeleteView, WDoActionView
 
 from django.shortcuts import render
 
@@ -144,13 +144,34 @@ class ZoneUpdateView(SUpdateView):
         return self.success_url
 
 
-
 class ZoneDeleteView(SDeleteView):
     model = Zone
     template_name = "core/zone/zone_confirm_delete.html"
     login_url = reverse_lazy('login')
     permission_required = ('core.delete_zone',)
     success_url = reverse_lazy('zone_list')
+
+
+class ZoneConfirmPlanningView(WDoActionView):
+    model = Zone
+    action = 'confirm'
+    template_name = 'core/zone/zone_confirm_planning.html'
+    success_message = 'Planning Confirmé avec Succès'
+    action_name = 'Confirmer'
+
+    def get_success_url(self):
+        return reverse_lazy('zone_list')
+
+
+class ZoneReopenPlanningView(WDoActionView):
+    model = Zone
+    action = 'reopen'
+    template_name = 'core/zone/zone_reopen_planning.html'
+    success_message = 'Planning Réouvert avec Succès'
+    action_name = 'Réouvrir'
+
+    def get_success_url(self):
+        return reverse_lazy('zone_detail', kwargs={'parent_pk': self.get_object().pk, 'day_index': 0})
 
 
 # Employee views

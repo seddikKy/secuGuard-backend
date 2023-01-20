@@ -1,9 +1,15 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.http import Http404
+from django.contrib.messages.views import SuccessMessageMixin
+from django.core.exceptions import ImproperlyConfigured, ValidationError
+from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DetailView, DeleteView, ListView, TemplateView
 from django.views.generic.base import ContextMixin
 
 from django.db import models
+from django.views.generic.detail import BaseDetailView, SingleObjectTemplateResponseMixin
 
 
 class SListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
@@ -15,7 +21,16 @@ class SDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
 
 
 class SCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
-    pass
+
+    def form_valid(self, form):
+        try:
+            return super().form_valid(form)
+        except ValidationError as e:
+            if e.params and e.params.get('field'):
+                form.add_error(e.params.get('field'), e.message)
+            else:
+                messages.error(self.request, e.message)
+            return self.render_to_response(self.get_context_data(form=form))
 
 
 class SUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -150,3 +165,68 @@ class SParentDetailChildDetailView(ParentObjectMixin, SDetailView):
         context.update(self.get_parent_context_data())
         return context
 
+
+class DoActionMixin:
+    """Provide the ability to do actions on objects."""
+    success_url = None
+    action = ''
+    action_name = 'Not Set'
+
+    def do_action(self, request, *args, **kwargs):
+        raise NotImplementedError
+
+    def post(self, request, *args, **kwargs):
+        print('posted')
+        return self.do_action(request, *args, **kwargs)
+
+    def get_success_url(self):
+        if self.success_url:
+            return self.success_url.format(**self.object.__dict__)
+        else:
+            raise ImproperlyConfigured(
+                "No URL to redirect to. Provide a success_url.")
+
+
+class BaseDoActionView(DoActionMixin, BaseDetailView):
+    """
+    Base view for confirming an object.
+
+    Using this base class requires subclassing to provide a response mixin.
+    """
+
+
+class WDoActionView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, SingleObjectTemplateResponseMixin,
+                    BaseDoActionView):
+    """
+    View for deleting an object retrieved with self.get_object(), with a
+    response rendered by a template.
+    """
+    template_name = ''
+    login_url = reverse_lazy('app_login')
+    success_url = None
+    success_message = ""
+
+    def do_action(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+            self.object.do_action(action=self.action, user=request.user)
+            messages.success(request, self.success_message)
+            success_url = self.get_success_url()
+            print('action done')
+            print(request.POST.get('action'))
+
+            return HttpResponseRedirect(success_url)
+        except ValidationError as e:
+            for msg in e.messages:
+                messages.error(request, msg)
+            return render(request, self.template_name, self.get_context_data())
+
+    def get_permission_required(self):
+        perm_required = f'{self.model._meta.app_label}.{self.action}_{self.model._meta.model_name}'
+        return (perm_required,)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action_name'] = self.action_name
+        context['action'] = self.action
+        return context

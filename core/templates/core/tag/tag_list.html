@@ -21,9 +21,16 @@
                 <td>{{ object.zone.site}}</td>
                 <td>{{ object.zone.site.enterprise}}</td>
                 <td>
-                    <a href="{% url 'tag_update' pk=object.pk %}" class="w3-btn w3-theme-l5 w3-small">Modifier</a>
-                    <a href="{% url 'tag_delete' pk=object.pk %}" class="w3-btn w3-red w3-small">Supprimer</a>
-                    <a href="{% url 'tag_detail' pk=object.pk %}" class="w3-btn w3-theme-l5 w3-small">Afficher</a>
+                    <a href="{% url 'tag_detail' pk=object.pk %}"
+                       class="w3-button w3-round w3-padding-small">
+                        {% include 'components/_view_icon.html' with height=19 %}
+                    </a>
+                    <a href="{% url 'tag_update' pk=object.pk %}" class="w3-button w3-round w3-padding-small">
+                        {% include 'components/_modify_icon.html' with height=19 %}
+                    </a>
+                    <a href="{% url 'tag_delete' pk=object.pk %}" class="w3-button w3-round w3-padding-small">
+                        {% include 'components/_delete_icon.html' with height=19 %}
+                    </a>
                 </td>
             </tr>
         {% endfor %}

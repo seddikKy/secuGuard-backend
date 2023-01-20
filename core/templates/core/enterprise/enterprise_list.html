@@ -15,9 +15,16 @@
                 <td>{{ object.pk }}</td>
                 <td>{{ object.designation }}</td>
                 <td>
-                    <a href="{% url 'enterprise_update' pk=object.pk %}" class="w3-btn w3-theme-l5 w3-small">Modifier</a>
-                    <a href="{% url 'enterprise_delete' pk=object.pk %}" class="w3-btn w3-red w3-small">Supprimer</a>
-                    <a href="{% url 'enterprise_detail' pk=object.pk %}" class="w3-btn w3-theme-l5 w3-small">Afficher</a>
+                        <a href="{% url 'enterprise_detail' pk=object.pk %}"
+                       class="w3-button w3-round w3-padding-small">
+                        {% include 'components/_view_icon.html' with height=19 %}
+                    </a>
+                    <a href="{% url 'enterprise_update' pk=object.pk %}" class="w3-button w3-round w3-padding-small">
+                        {% include 'components/_modify_icon.html' with height=19 %}
+                    </a>
+                    <a href="{% url 'enterprise_delete' pk=object.pk %}" class="w3-button w3-round w3-padding-small">
+                        {% include 'components/_delete_icon.html' with height=19 %}
+                    </a>
                 </td>
             </tr>
         {% endfor %}

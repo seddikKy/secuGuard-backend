@@ -1,28 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>{{ parent_object }}</h2>
-    <table class="w3-table w3-bordered w3-margin-top w3-white detail-table">
-        <tr>
-            <th>ID</th>
-            <td>{{ parent_object.pk }}</td>
-        </tr>
-        <tr>
-            <th>Désignation</th>
-            <td>{{ parent_object.designation }}</td>
-        </tr>
-    </table>
-    <div class="w3-margin-top">
-        <a href="{% url 'zone_update' pk=parent_object.pk %}" class="w3-btn w3-theme-l1  w3-round-small">Modifier</a>
-        <a href="{% url 'zone_delete' pk=parent_object.pk %}" class="w3-btn w3-red  w3-round-small">Supprimer</a>
-        <a href="{% url 'zone_list' %}" class="w3-btn w3-theme-l1 w3-round-small">Retour à liste</a>
-
-    </div>
+    {% include 'core/zone/planning/parent_section.html' %}
 
     {#    Child object List#}
     <div class="w3-padding-32">
         {#    Tab bar#}
-       {% include 'core/zone/planning/_days_tab_bar.html' %}
+        {% include 'core/zone/planning/_days_tab_bar.html' %}
         <div class="w3-padding-16">
             <a class="w3-button w3-border"
                href="{% url 'planning_create' parent_pk=parent_object.pk day_index=request.resolver_match.kwargs.day_index %}">
@@ -46,9 +30,10 @@
                         <a class="w3-button w3-theme-l5"
                            href="{% url 'planning_update' parent_pk=parent_object.pk day_index=obj.selected_day_index pk=obj.pk %}">Modifier</a>
                         <a class="w3-button w3-deep-orange"
-                        href="{% url 'planning_delete' parent_pk=parent_object.pk day_index=obj.selected_day_index pk=obj.pk %}">
-                        Supprimer</a>
-                        <a class="w3-button w3-theme-l5" href="{% url 'planning_detail' parent_pk=parent_object.pk day_index=obj.selected_day_index pk=obj.pk %}">Afficher</a>
+                           href="{% url 'planning_delete' parent_pk=parent_object.pk day_index=obj.selected_day_index pk=obj.pk %}">
+                            Supprimer</a>
+                        <a class="w3-button w3-theme-l5"
+                           href="{% url 'planning_detail' parent_pk=parent_object.pk day_index=obj.selected_day_index pk=obj.pk %}">Afficher</a>
                     </td>
                 </tr>
 

@@ -8,7 +8,8 @@ from .views import (EmployeeListView, EmployeeCreateView, EmployeeUpdateView, Em
                     SiteDetailView, TagListView, TagCreateView, TagUpdateView, TagDeleteView,
                     TagDetailView, ZoneListView, ZoneCreateView, ZoneUpdateView, ZoneDeleteView,
                     ZoneDetailPlanningListView, ZoneDetailPlanningCreateView, ZoneDetailPlanningUpdateView,
-                    ZoneDetailPlanningDeleteView, ZoneDetailPlanningDetailView)
+                    ZoneDetailPlanningDeleteView, ZoneDetailPlanningDetailView, ZoneConfirmPlanningView,
+                    ZoneReopenPlanningView)
 
 urlpatterns = [
     path('api/', include(router.urls)),
@@ -31,6 +32,8 @@ urlpatterns = [
     path('zones/create', ZoneCreateView.as_view(), name='zone_create'),
     path('zones/<int:pk>/update', ZoneUpdateView.as_view(), name='zone_update'),
     path('zones/<int:pk>/delete', ZoneDeleteView.as_view(), name='zone_delete'),
+    path('zones/<int:pk>/confirm', ZoneConfirmPlanningView.as_view(), name='zone_confirm'),
+    path('zones/<int:pk>/reopen', ZoneReopenPlanningView.as_view(), name='zone_reopen'),
 
     # Zone Planning
     path('zones/<int:parent_pk>/<int:day_index>/plannings/', ZoneDetailPlanningListView.as_view(), name='zone_detail'),

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form method="POST" action="{% url 'zone_reopen' pk=object.pk %}">
+        {% csrf_token %}
+        <p class="w3-padding-16 w3-white w3-container">Voulez-vous vraiment <b>{{ action_name }}</b> le planning de la zone <b>{{ object }}</b> ?
+        </p>
+        <input class="w3-btn w3-red w3-round-small" type="submit" value="{{ action_name }}"/>
+        <a class="w3-btn w3-theme-l1 w3-round-small" href="javascript:history.back()">Annuler</a>
+    </form>
+{% endblock %}
