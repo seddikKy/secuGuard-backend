@@ -106,6 +106,7 @@ class Zone(TimestampModel):
 
 class Employee(TimestampModel):
     designation = models.CharField(max_length=255, verbose_name='Nom de l\'employée')
+    code_pin = models.CharField(max_length=6, verbose_name='Code PIN')
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
 
     class Meta:

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -24,7 +25,7 @@ class AppLogoutView(LogoutView):
 
 # Home view
 
-class Home(STemplateView):
+class Home(LoginRequiredMixin, STemplateView):
     template_name = 'home.html'
     login_url = reverse_lazy('login')
 
