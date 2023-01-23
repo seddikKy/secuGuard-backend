@@ -92,7 +92,8 @@ class Zone(TimestampModel):
                     PatrolLog.objects.create(
                         tag=tag,
                         check_tolerance=plan.tolerated_time,
-                        check_datetime=check_datetime
+                        check_datetime=check_datetime,
+                        planning=plan
                     )
                     # todo if holidays ?
 
@@ -108,6 +109,7 @@ class Employee(TimestampModel):
     designation = models.CharField(max_length=255, verbose_name='Nom de l\'employée')
     code_pin = models.CharField(max_length=6, verbose_name='Code PIN')
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
+    code_pin = models.CharField(max_length=255, verbose_name='Code PIN', null=True)
 
     class Meta:
         verbose_name = 'Employée'
@@ -128,32 +130,14 @@ class Tag(TimestampModel):
 
     def __str__(self):
         return self.designation
+    
 
-
-class PatrolLog(TimestampModel):
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, verbose_name='Tag')
-    audio_path = models.CharField(max_length=255, verbose_name='Lien de la memo-vocale', blank=True, null=True)
-    image_path = models.ImageField(null=True, blank=True, upload_to="images/")
-    description_anomaly = models.TextField(verbose_name='Anomalie', blank=True, null=True)
-    is_checked = models.BooleanField(verbose_name='tag visité', default=False)
-    check_datetime = models.DateTimeField('Date / Heure prévue ')
-    check_tolerance = models.DurationField('Tolérance')
-    checked_datetime = models.DateTimeField(verbose_name='Date / Heure de passage', blank=True, null=True,
-                                            editable=False)
-    checked_by = models.ForeignKey(Employee, on_delete=models.PROTECT,
-                                   verbose_name=('Controlé par'),
-                                   null=True, blank=True, editable=False)
-
-    class Meta:
-        verbose_name = 'Journal des tournées'
-
-    def __str__(self):
-        return self.tag.designation
 
 
 class Holiday(TimestampModel):
     designation = models.CharField(max_length=100, verbose_name='Désignation')
     date = models.DateField(verbose_name='Date')
+
 
 
 class Planning(TimestampModel):
@@ -172,3 +156,24 @@ class Planning(TimestampModel):
             raise ValidationError('Vous ne pouvez pas modifier un planning valider !')
         else:
             super().save(args, kwargs)
+
+class PatrolLog(TimestampModel):
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, verbose_name='Tag')
+    audio_path = models.CharField(max_length=255, verbose_name='Lien de la memo-vocale', blank=True, null=True)
+    image_path = models.ImageField(null=True, blank=True, upload_to="images/")
+    description_anomaly = models.TextField(verbose_name='Anomalie', blank=True, null=True)
+    is_checked = models.BooleanField(verbose_name='tag visité', default=False)
+    check_datetime = models.DateTimeField('Date / Heure prévue ')
+    check_tolerance = models.DurationField('Tolérance')
+    checked_datetime = models.DateTimeField(verbose_name='Date / Heure de passage', blank=True, null=True,
+                                            editable=False)
+    checked_by = models.ForeignKey(Employee, on_delete=models.PROTECT,
+                                   verbose_name=('Controlé par'),
+                                   null=True, blank=True, editable=False)
+    planning = models.ForeignKey(Planning, on_delete=models.SET_NULL,null=True, verbose_name='Planning')
+
+    class Meta:
+        verbose_name = 'Journal des tournées'
+
+    def __str__(self):
+        return self.tag.designation
