@@ -56,7 +56,8 @@ class PatrolLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = PatrolLog
         fields = ['id', 'tag', 'audio_path', 'image_path', 'description_anomaly', 'zone_id', 'zone__designation',
-                  'tag__designation', 'tag__order', 'is_checked', 'created', 'modified', 'now'
+                  'tag__designation', 'tag__order', 'is_checked', 'created', 'modified', 'now', 'check_datetime',
+                  'check_tolerance', 'checked_datetime', 'checked_by'
                   ]
 
 

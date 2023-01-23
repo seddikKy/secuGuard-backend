@@ -1,26 +1,36 @@
 {% extends 'base.html' %}
 {% block content %}
-    <ul class="menu_ul">
-        <li><a class="menu-link" href="{% url 'enterprise_list' %}">Gestion Des Entreprises</a></li>
-        <li><a class="menu-link" href="{% url 'site_list' %}">Gestion Des Sites</a></li>
-        <li><a class="menu-link" href="{% url 'zone_list' %}">Gestion Des Zones & Planning</a></li>
-        <li><a class="menu-link" href="{% url 'employee_list' %}">Gestion Des Agents</a></li>
-        <li><a class="menu-link" href="{% url 'tag_list' %}">Gestion Des Tags</a></li>
-    </ul>
+    <table class="menu_table">
+        <tr>
+            <td class="w3-block w3-theme-l4"><a class="w3-block menu-link" href="{% url 'enterprise_list' %}">Gestion
+                Des Entreprises</a></td>
+        </tr>
+        <tr>
+            <td class="w3-block w3-theme-l4"><a class="menu-link  w3-block" href="{% url 'site_list' %}">Gestion Des Sites</a></td>
+        </tr>
+        <tr>
+            <td  class="w3-block w3-theme-l4"><a class="menu-link  w3-block" href="{% url 'zone_list' %}">Gestion Des Zones & Planning</a></td>
+        </tr>
+        <tr>
+            <td  class="w3-block w3-theme-l4"><a class="menu-link  w3-block" href="{% url 'employee_list' %}">Gestion Des Agents</a></td>
+        </tr>
+        <tr>
+            <td  class="w3-block w3-theme-l4"><a class="menu-link  w3-block" href="{% url 'tag_list' %}">Gestion Des Tags</a></td>
+        </tr>
+    </table>
 
     <style>
 
-        .menu_ul > li {
-            list-style-type: none;
-            padding: 10px;
-
+        .menu_table {
+            width: 100%;
+            max-width: 400px;
         }
 
+
         .menu-link {
-            margin: 10px;
-            background-color: #00c08d;
-            padding: 10px;
+            padding: 8px 16px;
             text-decoration: none;
+            width: 100%;
         }
 
     </style>
