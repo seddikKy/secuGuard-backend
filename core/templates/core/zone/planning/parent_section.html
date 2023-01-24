@@ -1,3 +1,4 @@
+{%  load  static %}
 <h2>{{ parent_object }}</h2>
 <table class="w3-table w3-bordered w3-margin-top w3-white detail-table">
     <tr>
@@ -14,12 +15,12 @@
     </tr>
 </table>
 <div class="w3-margin-top">
-    <a href="{% url 'zone_update' pk=parent_object.pk %}" class="w3-btn w3-theme-l1  w3-round-small">Modifier</a>
-    <a href="{% url 'zone_delete' pk=parent_object.pk %}" class="w3-btn w3-red  w3-round-small">Supprimer</a>
+    <a href="{% url 'zone_update' pk=parent_object.pk %}" class="w3-button w3-border  w3-round">Modifier</a>
+    <a href="{% url 'zone_delete' pk=parent_object.pk %}" class="w3-button w3-border  w3-round">Supprimer</a>
     {% if parent_object.plan_state == 1 %}
-        <a href="{% url 'zone_confirm' pk=parent_object.pk %}" class="w3-btn w3-deep-orange">Confirmer</a>
+        <a href="{% url 'zone_confirm' pk=parent_object.pk %}" class="w3-button w3-theme-l1 border  w3-round">Confirmer</a>
     {% elif  parent_object.plan_state == 2 %}
-        <a href="{% url 'zone_reopen' pk=parent_object.pk %}" class="w3-btn w3-deep-orange">Réouvrir</a>
+        <a href="{% url 'zone_reopen' pk=parent_object.pk %}" class="w3-button w3-border  w3-round">Réouvrir</a>
     {% endif %}
-    <a href="{% url 'zone_list' %}" class="w3-btn w3-theme-l1 w3-round-small">Retour à liste</a>
+    <a href="{% url 'zone_list' %}" class="w3-button w3-border  w3-round">Retour à liste</a>
 </div>

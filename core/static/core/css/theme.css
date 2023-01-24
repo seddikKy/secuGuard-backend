@@ -7,6 +7,9 @@ html, body, h1, h2, h3, h4, h5, h6 {
 .navbar a{
     text-decoration: none;
 }
+h2{
+    font-size: 1.8em !important
+}
 
 .model-form, .detail-table {
     width: 100%;
@@ -30,6 +33,12 @@ html, body, h1, h2, h3, h4, h5, h6 {
 .w3-xlight-gray{
     background-color: #f0f0f0 !important;
     color: black !important;
+}
+.no-text-decoration{
+    text-decoration: none !important;
+}
+.w3-bold{
+    font-weight: 700 !important;
 }
 
 /*   Below is default from w3css theme builder */

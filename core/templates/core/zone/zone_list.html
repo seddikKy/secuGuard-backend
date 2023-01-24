@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
+{% block breadcrumbs %}
+    <div class="w3-bar w3-dark-gray">
+        <div class="w3-bar-item"><a class="no-text-decoration" href="{% url 'home' %}">Accueil</a></div>
+        <div class="w3-bar-item"><img src="{% static 'core/icons/next_icon_red.svg' %}" height="18"></div>
+    </div>
+{% endblock %}
 {% block content %}
     <h2>Liste des zones</h2>
-    <a href="{% url 'zone_create' %}" class="w3-btn w3-theme-action w3-round-small">Nouveau</a>
+    <a href="{% url 'zone_create' %}" class="w3-button w3-theme-l1 w3-round">Nouveau</a>
     <table class="w3-table w3-bordered w3-margin-top w3-white">
         <thead>
         <th>ID</th>
@@ -34,7 +40,7 @@
 
                     {% if object.plan_state == 1 %}
                         <a href="{% url 'zone_confirm' pk=object.pk %}"
-                           class="w3-button w3-deep-orange w3-small w3-round">Confirmer</a>
+                           class="w3-button w3-theme-l1 w3-small w3-round">Confirmer</a>
                     {% elif object.plan_state == 2 %}
                         <a href="{% url 'zone_reopen' pk=object.pk %}"
                            class="w3-button w3-light-gray w3-small w3-round">Réouvrir</a>
